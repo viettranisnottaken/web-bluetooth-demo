@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+
 @Component({
   selector: 'app-web-blue-tooth-sample',
   templateUrl: './web-blue-tooth-sample.component.html',
@@ -7,26 +9,28 @@ import { Component, OnInit } from '@angular/core';
 export class WebBlueToothSampleComponent implements OnInit {
   device: any;
   deviceInfo: any;
-  returnedValue: any;
+  returnedValues = [];
   error: any;
+  serviceUuid = new FormControl('6e400001-b5a3-f393-e0a9-e50e24dcca9e');
+  command = new FormControl('0x0200000000000000000000000000000000000000');
 
   constructor() {}
 
   ngOnInit(): void {}
 
   async connectDevice() {
+    let mobileNavigatorObject: any = window.navigator;
     try {
       this.error = null;
-      const device = await navigator.bluetooth.requestDevice({
+      const device = await mobileNavigatorObject.bluetooth.requestDevice({
         filters: [
           {
-            services: ['6e400001-b5a3-f393-e0a9-e50e24dcca9e'],
+            services: [this.serviceUuid.value],
           },
         ],
       });
-      const serviceUuid = '6e400001-b5a3-f393-e0a9-e50e24dcca9e';
       const server = await device.gatt.connect();
-      const service = await server.getPrimaryService(serviceUuid);
+      const service = await server.getPrimaryService(this.serviceUuid.value);
       const WriteCharacteristic = await service.getCharacteristic(
         '6e400002-b5a3-f393-e0a9-e50e24dcca9e'
       );
@@ -38,19 +42,20 @@ export class WebBlueToothSampleComponent implements OnInit {
 
       const startNoti = await ReadCharacteristic.startNotifications();
 
-      WriteCharacteristic.writeValue(
-        this.hexToString('0x0200000000000000000000000000000000000000')
-      );
+      WriteCharacteristic.writeValue(this.hexToString(this.command.value));
 
       let characteristicValue;
 
       startNoti.addEventListener('characteristicvaluechanged', (event: any) => {
         characteristicValue = ReadCharacteristic.value;
         console.log('read: ', characteristicValue);
-        this.returnedValue = new Uint8Array(characteristicValue.buffer);
+        this.returnedValues.push(
+          this.buf2hex(new Uint8Array(characteristicValue.buffer))
+        ),
+          console.log('returned: ', this.returnedValues);
       });
     } catch (error) {
-      this.returnedValue = null;
+      this.returnedValues = [];
       this.error = error;
       console.log(error);
     }
@@ -80,5 +85,14 @@ export class WebBlueToothSampleComponent implements OnInit {
     }
 
     return result;
+  }
+
+  buf2hex(buffer) {
+    // buffer is an ArrayBuffer
+    let hex = Array.prototype.map
+      .call(new Uint8Array(buffer), (x) => ('00' + x.toString(16)).slice(-2))
+      .join('');
+
+    return `0x${hex}`;
   }
 }

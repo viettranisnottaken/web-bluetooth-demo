@@ -1,4 +1,20 @@
+<div>
+  <label>
+    Service uuid:
+    <input type="text" [formControl]="serviceUuid" style="width: 50vw;" />
+  </label>
+
+  <br />
+
+  <label>
+    Command:
+    <input type="text" [formControl]="command" style="width: 50vw;" />
+  </label>
+</div>
+
 <button (click)="connectDevice()">connect</button>
 
-<p *ngIf="returnedValue && !error">returned value: {{ returnedValue }}</p>
-<p *ngIf="error && !returnedValue">error: {{ error }}</p>
+<p *ngIf="error && !returnedValues">error: {{ error }}</p>
+<div *ngFor="let returnedValue of returnedValues">
+  <p *ngIf="returnedValue && !error">returned value: {{ returnedValue }}</p>
+</div>
