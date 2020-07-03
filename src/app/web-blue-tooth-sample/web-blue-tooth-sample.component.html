@@ -1,0 +1,4 @@
+<button (click)="connectDevice()">connect</button>
+
+<p *ngIf="returnedValue && !error">returned value: {{ returnedValue }}</p>
+<p *ngIf="error && !returnedValue">error: {{ error }}</p>
