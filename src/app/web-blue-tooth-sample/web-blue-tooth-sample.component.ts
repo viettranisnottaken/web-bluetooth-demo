@@ -53,6 +53,7 @@ export class WebBlueToothSampleComponent implements OnInit {
           this.buf2hex(new Uint8Array(characteristicValue.buffer))
         ),
           console.log('returned: ', this.returnedValues);
+        device.gatt.disconnect();
       });
     } catch (error) {
       this.returnedValues = [];
