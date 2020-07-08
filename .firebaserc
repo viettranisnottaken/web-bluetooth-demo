@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "web-bluetooth-demo-6ee13": {
+      "hosting": {
+        "web-bluetooth-sample": [
+          "web-bluetooth-demo-6ee13"
+        ]
+      }
+    }
+  }
+}

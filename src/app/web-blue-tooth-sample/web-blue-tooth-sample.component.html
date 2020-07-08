@@ -1,4 +1,31 @@
+<div class="instructions">
+  <h1>Instructions</h1>
+  <ol>
+    <li>
+      Turn on your PC's or laptop's bluetooth
+    </li>
+    <li>
+      Turn on the device
+    </li>
+    <li>
+      Input service uuid and/or command if necessary
+    </li>
+    <li>
+      Click the only button on the screen (that says "connect")
+    </li>
+    <li>
+      Choose your device
+    </li>
+    <li>
+      The result will be logged right on the page and in the console
+    </li>
+  </ol>
+</div>
+
+<hr />
+
 <div>
+  <h1>Inputs</h1>
   <label>
     Service uuid:
     <input type="text" [formControl]="serviceUuid" style="width: 50vw;" />
@@ -13,6 +40,10 @@
 </div>
 
 <button (click)="connectDevice()">connect</button>
+
+<hr />
+
+<h1>Results</h1>
 
 <p *ngIf="error && !returnedValues">error: {{ error }}</p>
 <div *ngFor="let returnedValue of returnedValues">

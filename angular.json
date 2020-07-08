@@ -121,8 +121,13 @@
               "devServerTarget": "web-bluetooth-sample:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {}
         }
       }
-    }},
+    }
+  },
   "defaultProject": "web-bluetooth-sample"
 }
